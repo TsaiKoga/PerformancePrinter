@@ -1,0 +1,25 @@
+{
+    "name": "tsaikoga/performance-printer",
+    "description": "PerformancePrinter is a laravel package to print each requests' performance infomation for development.",
+    "keywords": [
+        "PerformancePrinter",
+        "request performance",
+        "print raw sql",
+        "explain sql"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "TsaiKoga",
+            "email": "969024089@qq.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "TsaiKoga\\PerformancePrinter\\": "src/"
+        }
+    },
+    "require": {
+        "laravel/framework": "^7.0|^6.0|^5.5",
+    }
+}
