@@ -19,7 +19,15 @@
             "TsaiKoga\\PerformancePrinter\\": "src/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "TsaiKoga\\PerformancePrinter\\PrinterServiceProvider"
+            ]
+        }
+    },
     "require": {
         "laravel/framework": "^7.0|^6.0|^5.5",
+        "php": "^7.0.0"
     }
 }

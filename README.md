@@ -1,5 +1,9 @@
 <h1 align="center">Performance Printer</h1>
 
+Performance Printer is a laravel package to print each requests' performance infomation for development.
+
+**require** : Laravel/framework 5.5+
+
 ## Features
 - Request
 > Display request method, request path and request body.
@@ -14,10 +18,15 @@
 - Response
 > The response datas and the times it costs.
 
-## Configuration
-You can set the configuration for the printer.
+## Usage
+1. Install the package for development environment:
+```bash
+composer require tsaikoga/performance-printer:dev-master --dev
+```
 
-In `config/PerformancePrinter.php`:
+You can add custom configuration for the printer.
+
+2. Create a file `config/performance_printer.php`:
 ```php
 return [
     // print request message
@@ -46,18 +55,17 @@ return [
         'unique_query' => true,
 
         // The connections
-        'connections' => ['mysql', 'mysql_x'],
+        'connections' => ['mysql'],
     ],
 ];
 ```
 
-
-## Usage
-In `.env` file, set `local` to the application environment:
+3. In `.env` file, set `local` to the application environment:
 ```bash
 APP_ENV=local
 ```
-Run the server:
+
+4. Run the server:
 ```bash
 php artisan serve
 ```

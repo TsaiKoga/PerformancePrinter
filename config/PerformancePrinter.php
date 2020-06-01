@@ -26,6 +26,6 @@ return [
         'unique_query' => true,
 
         // The connections
-        'connections' => ['mysql', 'mysql_online', 'mysql_infzm_x'],
+        'connections' => ['mysql'],
     ],
 ];
