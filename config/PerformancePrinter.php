@@ -28,4 +28,7 @@ return [
         // The connections
         'connections' => ['mysql'],
     ],
+
+    // enable this package
+    'enable' => true,
 ];

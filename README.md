@@ -2,7 +2,7 @@
 
 <p align="center">
 <a link="https://packagist.org/packages/tsaikoga/performance-printer" style="text-decoration:none;">
-  <img src="https://img.shields.io/badge/stable-v1.0.0-brightgreen" alt="Unstable">
+  <img src="https://img.shields.io/badge/stable-v1.0.1-brightgreen" alt="Unstable">
 </a>
 <a link="https://packagist.org/packages/tsaikoga/performance-printer" style="text-decoration:none;">
   <img src="https://img.shields.io/badge/unstable-dev--master-blue" alt="Unstable">
@@ -79,6 +79,9 @@ return [
         // The connections
         'connections' => ['mysql'],
     ],
+
+    // enable this package or disable it
+    'enable' => true,
 ];
 ```
 

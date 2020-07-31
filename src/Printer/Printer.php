@@ -159,7 +159,7 @@ class Printer extends ConsoleOutput
         $request = $this->request->server();
         $this->writeln("<question>[ {$request['REQUEST_METHOD']} ]</question> <info>{$request['REQUEST_URI']}</info>");
         if (in_array($request['REQUEST_METHOD'], ['POST', 'PUT', 'PATCH'])) {
-            $this->writeln("<question>[ Content-Type ]</question> :  {$request['HTTP_CONTENT_TYPE']} ");
+            if (isset($request['HTTP_CONTENT_TYPE'])) $this->writeln("<question>[ Content-Type ]</question> :  {$request['HTTP_CONTENT_TYPE']} ");
             $this->writeln($this->request->getContent());
         }
     }
