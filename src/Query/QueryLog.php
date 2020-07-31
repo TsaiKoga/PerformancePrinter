@@ -185,7 +185,7 @@ class QueryLog
     {
         $bindings = array_map(function($q) {
                         $result = $q;
-                        if (is_string($q) && !in_array(mb_strtolower($q), ["true", "false"])) $result = "\"$q\"";
+                        if (is_string($q) && !in_array(mb_strtolower($q), ["true", "false"])) $result = "\"".str_replace('"', '\"', $q)."\"";
                         if (in_array(mb_strtolower($q), ["true", "false"])) $result = mb_strtolower($q);
                         if (is_null($q)) $result = "null";
                         if (is_object($q) && (new \ReflectionClass($q))->getShortName() === "Carbon") $result = "\"{$q->format('Y-m-d H:i:s')}\"";
