@@ -2,7 +2,7 @@
 
 <p align="center">
 <a link="https://packagist.org/packages/tsaikoga/performance-printer" style="text-decoration:none;">
-  <img src="https://img.shields.io/badge/stable-v1.0.1-brightgreen" alt="Unstable">
+  <img src="https://img.shields.io/badge/stable-v1.1.1-brightgreen" alt="Unstable">
 </a>
 <a link="https://packagist.org/packages/tsaikoga/performance-printer" style="text-decoration:none;">
   <img src="https://img.shields.io/badge/unstable-dev--master-blue" alt="Unstable">
@@ -36,11 +36,13 @@ Performance Printer is a laravel package to print each requests' performance inf
 
 ## Usage
 1. Install the package for development environment:
-Stable version:
+
+**Stable version**:
 ```bash
 composer require tsaikoga/performance-printer --dev
 ```
-Unstable version:
+
+**Unstable version**:
 ```bash
 composer require tsaikoga/performance-printer:dev-master --dev
 ```
@@ -82,6 +84,15 @@ return [
 
     // enable this package or disable it
     'enable' => true,
+
+    // log
+    'log' => [
+        // is logging enable?
+        'enable' => true,
+
+        // The path that the log file stored
+        'filepath' => '/tmp/performance_printer.log',
+    ],
 ];
 ```
 

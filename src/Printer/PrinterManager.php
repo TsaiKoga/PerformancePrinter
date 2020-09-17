@@ -48,6 +48,9 @@ class PrinterManager
         $printer  = new Printer($event->request, $event->response, $querylog);
         $printer->setTableStyle($this->options['table_style']);
         $printer->setLang($this->options['lang']);
+        if ($this->options['log']['enable']) {
+            $printer->enableLogging($this->options['log']['filepath']);
+        }
 
         if ($this->options['request']) {
             $printer->outputRequest();

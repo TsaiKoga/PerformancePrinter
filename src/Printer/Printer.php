@@ -2,7 +2,7 @@
 /**
  * @package   PerformancePrinter
  * @author    TsaiKoga
- * @version   1.0.0
+ * @version   1.1.1
  *
  */
 namespace TsaiKoga\PerformancePrinter\Printer;
@@ -10,6 +10,7 @@ namespace TsaiKoga\PerformancePrinter\Printer;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use TsaiKoga\PerformancePrinter\Printer\PrinterLogger;
 
 class Printer extends ConsoleOutput
 {
@@ -55,6 +56,21 @@ class Printer extends ConsoleOutput
      * @var string
      */
     protected $lang;
+
+
+    /**
+     * is logging enabled
+     *
+     * @var bool
+     */
+    protected $is_logging_enabled;
+
+    /**
+     * logger
+     *
+     * @var \Monolog\Logger
+     */
+    protected $logger;
 
     /**
      * Create a new Printer instance.
@@ -113,6 +129,22 @@ class Printer extends ConsoleOutput
     }
 
     /**
+     * Enable logging
+     *
+     * @param string $filepath
+     * @return TsaiKoga\PerformancePrinter\Printer\Printer $this
+     */
+    public function enableLogging($filepath)
+    {
+        $this->is_logging_enabled = true;
+        $logger = new PrinterLogger();
+        $logger->pushHandler($logger->setFormatter($filepath));
+        $this->logger = $logger;
+        return $this;
+
+    }
+
+    /**
      * Get table
      *
      * @return Symfony\Component\Console\Helper\Table $table
@@ -147,6 +179,10 @@ class Printer extends ConsoleOutput
             $table->setRows($content);
             $table->render();
         }
+
+        if ($this->is_logging_enabled) {
+            $this->logger->renderTable($header, $content);
+        }
     }
 
     /**
@@ -157,10 +193,10 @@ class Printer extends ConsoleOutput
     public function outputRequest()
     {
         $request = $this->request->server();
-        $this->writeln("<question>[ {$request['REQUEST_METHOD']} ]</question> <info>{$request['REQUEST_URI']}</info>");
+        $this->outputMsg("<question>[ {$request['REQUEST_METHOD']} ]</question> <info>{$request['REQUEST_URI']}</info>");
         if (in_array($request['REQUEST_METHOD'], ['POST', 'PUT', 'PATCH'])) {
-            if (isset($request['HTTP_CONTENT_TYPE'])) $this->writeln("<question>[ Content-Type ]</question> :  {$request['HTTP_CONTENT_TYPE']} ");
-            $this->writeln($this->request->getContent());
+            if (isset($request['HTTP_CONTENT_TYPE'])) $this->outputMsg("<question>[ Content-Type ]</question> :  {$request['HTTP_CONTENT_TYPE']} ");
+            $this->outputMsg($this->request->getContent());
         }
     }
 
@@ -173,9 +209,9 @@ class Printer extends ConsoleOutput
     {
         $included_files_count = count(get_included_files());
         if ($this->lang === 'en') {
-            $this->writeln("<question>[ Included Files Count ] </question> $included_files_count");
+            $this->outputMsg("<question>[ Included Files Count ] </question> $included_files_count");
         } else {
-            $this->writeln("<question>[ 加载文件数量 ] </question> $included_files_count");
+            $this->outputMsg("<question>[ 加载文件数量 ] </question> $included_files_count");
         }
     }
 
@@ -189,9 +225,9 @@ class Printer extends ConsoleOutput
         $total = $this->querylog->getQueriesTotal();
         $times = $this->querylog->getQueriesRunningTime();
         if ($this->lang === 'en') {
-            $this->writeln("<question>[ Total ]</question> $total queries and ran for $times ms.");
+            $this->outputMsg("<question>[ Total ]</question> $total queries and ran for $times ms.");
         } else {
-            $this->writeln("<question>[ 总计 ]</question> $total 条语句运行了 $times 毫秒。");
+            $this->outputMsg("<question>[ 总计 ]</question> $total 条语句运行了 $times 毫秒。");
         }
     }
 
@@ -217,17 +253,17 @@ class Printer extends ConsoleOutput
     {
         if ($this->lang === 'en') {
             if ($log['count'] > 1) {
-                $this->writeln("<info>>>>></info> There are a total of {$log['count']} same queries with different bindings:");
-                $this->writeln("<question>[ These queries ran for {$log['time']} ms totally ]</question> RAW SQL: <info>{$log['sql']}</info>");
+                $this->outputMsg("<info>>>>></info> There are a total of {$log['count']} same queries with different bindings:");
+                $this->outputMsg("<question>[ These queries ran for {$log['time']} ms totally ]</question> RAW SQL: <info>{$log['sql']}</info>");
             } else {
-                $this->writeln("<question>[ SQL ran for {$log['time']} ms ]</question> RAW SQL: <info>{$log['sql']}</info>");
+                $this->outputMsg("<question>[ SQL ran for {$log['time']} ms ]</question> RAW SQL: <info>{$log['sql']}</info>");
             }
         } else {
             if ($log['count'] > 1) {
-                $this->writeln("<info>>>>></info> 总共有 {$log['count']} 条相同的查询只是查询参数不同:");
-                $this->writeln("<question>[ 这些查询总共运行 {$log['time']} 毫秒 ]</question> 原生 SQL: <info>{$log['sql']}</info>");
+                $this->outputMsg("<info>>>>></info> 总共有 {$log['count']} 条相同的查询只是查询参数不同:");
+                $this->outputMsg("<question>[ 这些查询总共运行 {$log['time']} 毫秒 ]</question> 原生 SQL: <info>{$log['sql']}</info>");
             } else {
-                $this->writeln("<question>[ SQL 运行了 {$log['time']} 毫秒 ]</question> 原生 SQL: <info>{$log['sql']}</info>");
+                $this->outputMsg("<question>[ SQL 运行了 {$log['time']} 毫秒 ]</question> 原生 SQL: <info>{$log['sql']}</info>");
             }
         }
 
@@ -254,9 +290,9 @@ class Printer extends ConsoleOutput
     {
         $response = $this->response->content();
         if ($this->lang === 'en') {
-            $this->writeln("<question>[ Response Load $this->expense ms]</question> $response");
+            $this->outputMsg("<question>[ Response Load $this->expense ms]</question> $response");
         } else {
-            $this->writeln("<question>[ 响应时间 $this->expense 毫秒 ]</question> $response");
+            $this->outputMsg("<question>[ 响应时间 $this->expense 毫秒 ]</question> $response");
         }
     }
 
@@ -270,6 +306,23 @@ class Printer extends ConsoleOutput
     {
         foreach(range(1, $num) as $i) {
             $this->writeln('');
+            if ($this->is_logging_enabled) {
+                $this->logger->info('');
+            }
+        }
+    }
+
+    /**
+     * output message
+     *
+     * @param string $msg
+     * @return void
+     */
+    public function outputMsg($msg)
+    {
+        $this->writeln($msg);
+        if ($this->is_logging_enabled) {
+            $this->logger->info(strip_tags($msg));
         }
     }
 
@@ -285,5 +338,4 @@ class Printer extends ConsoleOutput
     protected function outputIndexSuggestion($sql, $query, $bindings, $explains)
     {
     }
-
 }
