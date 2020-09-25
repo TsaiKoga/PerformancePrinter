@@ -105,6 +105,12 @@ APP_ENV=local
 ```bash
 php artisan serve
 ```
+If you are using nginx or apache as server.
+Try to enable the logger for message in configuration instead, you can customize the log path (default path: `/tmp/performance_printer.log`)
+```bash
+tail -f /tmp/performance_printer.log
+```
+
 
 ## Preview
 Printing Result:

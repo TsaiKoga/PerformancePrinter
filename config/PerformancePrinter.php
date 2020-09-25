@@ -31,4 +31,13 @@ return [
 
     // enable this package
     'enable' => true,
+
+    // log
+    'log' => [
+        // is logging enable?
+        'enable' => false,
+
+        // The path that the log file stored
+        'filepath' => '/tmp/performance_printer.log',
+    ],
 ];
