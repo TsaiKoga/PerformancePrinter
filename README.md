@@ -2,7 +2,7 @@
 
 <p align="center">
 <a link="https://packagist.org/packages/tsaikoga/performance-printer" style="text-decoration:none;">
-  <img src="https://img.shields.io/badge/stable-v1.1.1-brightgreen" alt="Unstable">
+  <img src="https://img.shields.io/badge/stable-v1.1.2-brightgreen" alt="Stable">
 </a>
 <a link="https://packagist.org/packages/tsaikoga/performance-printer" style="text-decoration:none;">
   <img src="https://img.shields.io/badge/unstable-dev--master-blue" alt="Unstable">
